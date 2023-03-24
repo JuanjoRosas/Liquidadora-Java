@@ -5,7 +5,9 @@ import java.util.Date;
  * no tiene ha tenido ascensos y no da la posibilidad de otorgarle uno tampoco.
  */
 public class Empleado {
+  //---------------------------------------------------------
   //ATRIBUTOS
+  //---------------------------------------------------------
   /*
    * Nombre y apellidos de empleado.
    */
@@ -24,14 +26,16 @@ public class Empleado {
   /*
    * Salario mensual del empleado.
    */
-  private double salario;
+  private double salarioOrdinario;
 
   /*
    * Fecha en la que ingreso a la compañia
    */
   private Date fechaIngreso;
 
+  //---------------------------------------------------------
   //CONSTRUCTOR
+  //---------------------------------------------------------
   /**
    * Crea una instancia de la clase Empleado con los valores pasados por parametro.
    * @param pNombre Cadena de texto que se va a asignar al nombre del empleado.
@@ -44,11 +48,13 @@ public class Empleado {
     nombre = pNombre;
     identificacion = pId;
     cargo = pCargo;
-    salario = pSalario;
+    salarioOrdinario = pSalario;
     fechaIngreso = pFechaIngreso;
   }
 
+  //---------------------------------------------------------
   //METODOS
+  //---------------------------------------------------------
   /**
    * Retorna el nombre del empleado.
    * @return Cadena de texto con el nombre del empleado.
@@ -77,8 +83,8 @@ public class Empleado {
  * Retorna el valor del salario mensual del empleado.
  * @return double con el valor del salario mensual del empleado.
  */
-  public double getSalario() {
-    return salario;
+  public double getSalarioOrdinario() {
+    return salarioOrdinario;
   }
 
   /**
