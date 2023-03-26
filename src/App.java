@@ -1,12 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.Buffer;
 import java.util.Date;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import java.text.SimpleDateFormat;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        Empresa empresa = new Empresa();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         boolean salir = false;
 
@@ -20,43 +23,19 @@ public class App {
             String opcion = reader.readLine();
             switch (opcion) {
                 case "1":
-                    AgregarEmpleado(reader);
+                    AgregarEmpleado(reader, empresa);
                     break;
                 case "2":
-
+                    CalcularNominaEmpleado(reader, empresa);
                     break;
 
                 case "3":
-                    //liquidar todos los empleados
-                    Empleado empleado = null//aqui va el metodo de empresa donde se hace la busqueda del empleado
-                    try {
-                    if (empleado != null) {
-                        System.out.println("Ingrese el mes correspondiente (ENERO-DICIEMBRE):"
-                                + "\n 1.Enero."
-                                + "\n 2.Febrero."
-                                + "\n 3.Marzo."
-                                + "\n 4.Abril."
-                                + "\n 5.Mayo."
-                                + "\n 6.Junio."
-                                + "\n 7.Julio."
-                                + "\n 8.Agosto."
-                                + "\n 9.Septiembre."
-                                + "\n 10.Octubre."
-                                + "\n 11.Noviembre."
-                                + "\n 12.Diciembre. ");
-                        String mes = reader.readLine();
-                        }   
-
-                
-                    }   catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        } 
+                    CalcularNominaVariosEmpleados(reader, empresa);
                     break;
                 case "4":
                     System.out.println("¡Hasta luego!");
                     salir = true;
                     break;
-
                 default:
                     System.out.println(">ERROR: '" + opcion + "' no es una opción válida.");
             }
@@ -64,7 +43,7 @@ public class App {
         }
     }
 
-    private static void AgregarEmpleado (BufferedReader reader)throws IOException{
+    private static void AgregarEmpleado (BufferedReader reader, Empresa empresa)throws IOException{
         SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
         
         while(true){
@@ -83,10 +62,12 @@ public class App {
                 identificacion = reader.readLine();
                 if(identificacion.equals("BACK"))
                     return;
-                if(false)//TODO: Agregar en la condición la función de la clase Empresa que busca empleado por ID.
+                if(empresa.buscarEmpleado(identificacion) != null)
                     System.out.println(">ERROR: El empleado con id '" + identificacion +"' ya se encuentra registrado.");
-                else
+                else{
                     System.out.println(">DONE: Identificación válida.");
+                    break;
+                } 
             }
             
             //FECHA INGRESO
@@ -107,15 +88,15 @@ public class App {
 
             //CARGO
             while(true){
-                System.out.println("Ingrese el cargo del empleado:");
+                System.out.println("Ingrese el cargo del empleado {AdministradoraNegocio, Vendedora, Operario, Cajero, LiquidadoraNomina}:");
                 String strCargo = reader.readLine();
                 if(strCargo.equals("BACK"))
                     return;
                 try {
-                    //TODO: Funcion para cambiar el cargo de verificación de la empresa
+                    empresa.setCargoRevision(strCargo);
                     System.out.println(">DONE: Cargo seleccionado con exito.");             
                     break;
-                } catch (Exception e) {//TODO: Cambiar por la clase específica de la exception.
+                } catch (CargoException e) {
                     System.out.println(">ERROR: " + e.getMessage());
                 }  
             }
@@ -135,15 +116,15 @@ public class App {
                 }
                 if(salario!=0){
                     try {
-                        //TODO: Agregar función de verificar salario de la clase empresa
+                        empresa.verificarSalarioCargo(salario);
                         System.out.println(">DONE: Salario registrado");
                         break;
-                    } catch (Exception e) {//TODO: Cambiar por la clase específica de la exception.
+                    } catch (CargoException e) {
                         System.out.println(">ERROR: " + e.getMessage());
                     }  
                 }
             }
-            //TODO: Agregar función de agregar empleado;
+            empresa.AgregarEmpleado(nombre, identificacion, salario, fecha);
             System.out.println(">DONE: Empleado agregado con éxito");
 
             //Preguntar si desea agregar otro empleado
@@ -158,7 +139,8 @@ public class App {
         }
     }
 
-    private static void CalcularNominaEmpleado(BufferedReader reader) throws IOException{ //TODO: AQUI FALTA
+    private static void CalcularNominaEmpleado(BufferedReader reader, Empresa empresa) throws IOException{
+        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("-----Puede ingresar 'BACK' en cualquier momento para volver al menú-----");
 
         //Buscar ID
@@ -167,34 +149,82 @@ public class App {
             String mensaje = reader.readLine();
             if(mensaje.equals("BACK"))
                 return;
-            Empleado empleado = null;//TODO: Agregar funcion de buscar empleado de la clase Empresa.
-            if (empleado != null) {
-                //RUTA
-                String ruta;
+            empresa.setEmpleadoInforme(mensaje);
+            if (empresa.getEmpleadoInforme() != null) {
+                //MES
                 while(true){
-                    System.out.println("Ingrese la ruta de salida del resumen de nómina:");
-                    ruta = reader.readLine();
-                    if(ruta.equals("BACK"))
+                    Boolean calcular = false;
+                    System.out.println("Ingrese el nombre del mes en el que desea liquidar la nómina (ENERO-DICIEMBRE):");
+                    String strMes = reader.readLine();
+                    if(strMes.equals("BACK"))
                         return;
                     try {
-                        //TODO: Agregar función de conectar escritor de la clase Empresa.
-                        System.out.println(">DONE: Ruta registrada con éxito");
-                        break;
-                    } catch (Exception e) {//TODO: Cambiar por la exception personalizada correspondiente
+                        empresa.setMesNomina(strMes);
+                        calcular = true;
+                    } catch (FechaException e) {
                         System.out.println(">ERROR: " + e.getMessage());
+                    }
+                    if(calcular){
+                        try {
+                            empresa.calcularNominaEmpleado();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println(">ERROR: " + e.getMessage());
+                        }
                     }
                 }
 
-                //MES
-                String mes;
+                //RUTA
                 while(true){
-                    System.out.println("Ingrese el nombre de el mes en el que desea liquidar la nómina (ENERO-DICIEMBRE):");
-                    String mes = reader.readLine();
-                    if(mes.equals("BACK"))
+                    System.out.println("ingrese la ruta en la que desea que se guarde el informe (ej: C:/Users/user/Downloads):");
+                    String strRuta = reader.readLine();
+                    if(strRuta.equals("BACK"))
                         return;
+                    try {
+                        empresa.generarInformeUnico(strRuta);
+                        System.out.println(">DONE: Informe generado con éxito");
+                        break;
+                    } catch (InformeException e) {
+                        System.out.println(">ERROR: " + e.getMessage());
+                    }
+                }
                 break;
             } else
                 System.out.println(">ERROR: No se encontro al empleado con id '" + mensaje + "'.");
+        }
+    }
+
+    private static void CalcularNominaVariosEmpleados(BufferedReader reader, Empresa empresa) throws IOException{
+        SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.println("-----Puede ingresar 'BACK' en cualquier momento para volver al menú-----");
+
+        while(true){
+            Boolean calcular = false;
+            System.out.println("Ingrese el nombre del mes en el que desea liquidar la nómina (ENERO-DICIEMBRE):");
+            String strMes = reader.readLine();
+            if(strMes.equals("BACK"))
+                return;
+            try {
+                empresa.setMesNomina(strMes);
+                break;
+            } catch (FechaException e) {
+                System.out.println(">ERROR: " + e.getMessage());
+            }
+        }
+
+        //RUTA
+        while(true){
+            System.out.println("ingrese la ruta en la que desea que se guarden los informes (ej: C:/Users/user/Downloads):");
+            String strRuta = reader.readLine();
+            if(strRuta.equals("BACK"))
+                return;
+            try {
+                empresa.generarInformesTotales(strRuta);
+                System.out.println(">DONE: Se generaron los infores de los empleados activos en el mes ingresado y un informe total");
+                break;
+            } catch (Exception e) {
+                System.out.println(">ERROR: " + e.getMessage());
+            }
         }
     }
 }

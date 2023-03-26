@@ -1,27 +1,33 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public enum Mes {
+public enum Mes{
 
   //------------------------------------------------
   //Elementos
   //------------------------------------------------
-  ENERO("01/01/2023", "01/01/2023", "31/01/2023", 21, 122), 
-  FEBRERO("01/02/2023", "01/01/2023", "28/02/2023", 20, 122), 
-  MARZO("01/03/2023", "01/01/2023", "31/03/2023", 22, 122), 
-  ABRIL("01/04/2023", "01/01/2023", "30/04/2023", 18, 122), 
-  MAYO("01/05/2023", "01/01/2023", "31/05/2023", 21, 122), 
-  JUNIO("01/06/2023", "01/01/2023", "30/06/2023", 20, 122), 
-  JULIO("01/07/2023", "01/07/2023", "31/07/2023", 19, 121), 
-  AGOSTO("01/08/2023", "01/07/2023", "31/08/2023", 21, 121), 
-  SEPTIEMBRE("01/09/2023", "01/07/2023", "30/09/2023", 21, 121), 
-  OCTUBRE("01/10/2023", "01/07/2023", "31/10/2023", 21, 121), 
-  NOVIEMBRE("01/11/2023", "01/07/2023", "30/11/2023", 20, 121), 
-  DICIEMBRE("01/12/2023", "01/07/2023", "31/12/2023", 19, 121);
+  ENERO("Enero","01/01/2023", "01/01/2023", "31/01/2023", 21, 122), 
+  FEBRERO("Febrero", "01/02/2023", "01/01/2023", "28/02/2023", 20, 122), 
+  MARZO("Marzo", "01/03/2023", "01/01/2023", "31/03/2023", 22, 122), 
+  ABRIL("Abril","01/04/2023", "01/01/2023", "30/04/2023", 18, 122), 
+  MAYO("Mayo","01/05/2023", "01/01/2023", "31/05/2023", 21, 122), 
+  JUNIO("Junio","01/06/2023", "01/01/2023", "30/06/2023", 20, 122), 
+  JULIO("Julio","01/07/2023", "01/07/2023", "31/07/2023", 19, 121), 
+  AGOSTO("Agosto","01/08/2023", "01/07/2023", "31/08/2023", 21, 121), 
+  SEPTIEMBRE("Septiembre", "01/09/2023", "01/07/2023", "30/09/2023", 21, 121), 
+  OCTUBRE("Octubre", "01/10/2023", "01/07/2023", "31/10/2023", 21, 121), 
+  NOVIEMBRE("Noviembre","01/11/2023", "01/07/2023", "30/11/2023", 20, 121), 
+  DICIEMBRE("Diciembre", "01/12/2023", "01/07/2023", "31/12/2023", 19, 121);
 
   //------------------------------------------------
   //Atributos
   //------------------------------------------------
+
+  /**
+   * Cadena que representa el nombre del mes
+   */
+  private String nombreMes;
+
   /**
    * Fecha de inicio del mes.
    */
@@ -53,13 +59,14 @@ public enum Mes {
   //------------------------------------------------
   /**
    * Inicializa la enumeración con los valores pasados por parámetro.
+   * @param pNombreMeS Nombre del mes.
    * @param pFechaInicioMes Date que será asignada a la fecha de inicio del mes.
    * @param pFechaInicioSemestre Date que será asignada a la fecha de inicio del semestre.
    * @param pFechaFinalMes Date que será asignada a la fecha de final de mes.
    * @param pDiasLaborablesMes Entero que será asignado a los días laborables del mes.
    * @param pDiasLaborablesSemestre Entero que será asignado a los días laborables del semestre.
    */
-  private Mes(String pFechaInicioMes, String pFechaInicioSemestre, String pFechaFinalMes, int pDiasLaborablesMes, int pDiasLaborablesSemestre){
+  private Mes(String pNombreMes, String pFechaInicioMes, String pFechaInicioSemestre, String pFechaFinalMes, int pDiasLaborablesMes, int pDiasLaborablesSemestre){
     SimpleDateFormat dateF = new SimpleDateFormat("dd/MM/yyyy");
 
     try {
@@ -83,6 +90,7 @@ public enum Mes {
       this.fechaFinalMes = new Date();
     }
 
+    this.nombreMes = pNombreMes;
     this.diasLaborablesMes = pDiasLaborablesMes;
     this.diasLaborablesSemestre = pDiasLaborablesSemestre;
   }
@@ -90,6 +98,15 @@ public enum Mes {
   //------------------------------------------------
   //Metodos
   //------------------------------------------------
+
+  /**
+   * Devuelve el nombre del mes
+   * @return Nombre del mes
+   */
+  public String getNombreMes() {
+    return nombreMes;
+  }
+
   /**
    * Devuelve la fecha de inicio del mes.
    * @return Date con la fecha de inicio del mes

@@ -19,9 +19,9 @@ public class Empleado {
   private String identificacion;
 
   /*
-   * Nombre del cargo.
+   * Cargo del empleado.
    */
-  private String cargo;
+  private Cargo cargo;
 
   /*
    * Salario mensual del empleado.
@@ -40,11 +40,11 @@ public class Empleado {
    * Crea una instancia de la clase Empleado con los valores pasados por parametro.
    * @param pNombre Cadena de texto que se va a asignar al nombre del empleado.
    * @param pId Cadena de texto que se va a asignar a la identificacion del empleado.
-   * @param pCargo Cadena de texto que se va a asignar al nombre del cargo del empleado.
+   * @param pCargo Cargo del empleado.
    * @param pSalario Valor numerico que se va a asignar al salario mensual del empleado.
    * @param pFechaIngreso Fecha que se va a asignar a la fecha de ingreso del empleado.
    */
-  public Empleado(String pNombre, String pId, String pCargo, double pSalario, Date pFechaIngreso){
+  public Empleado(String pNombre, String pId, Cargo pCargo, double pSalario, Date pFechaIngreso){
     nombre = pNombre;
     identificacion = pId;
     cargo = pCargo;
@@ -72,10 +72,10 @@ public class Empleado {
   }
 
   /**
-   * Retorna el nombre del cargo del empleado.
-   * @return Cadena de texto con el nombre del cargo del empleado.
+   * Retorna el cargo del empleado.
+   * @return Cargo del empleado.
    */
-  public String getCargo() {
+  public Cargo getCargo() {
     return cargo;
   }
 

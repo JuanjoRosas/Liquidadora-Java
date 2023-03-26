@@ -113,6 +113,7 @@ public class Nomina {
    * @param pMesLiquidacion Mes que se va a asignar al mes de registro.
    */
   public Nomina(){
+    festivos = new ArrayList<Date>();
     crearFestivos();
   }
 
@@ -214,7 +215,7 @@ public class Nomina {
    */
   public void setMesLiquidacion(String strMes) throws FechaException{
     try {
-      mesLiquidacion = Mes.valueOf(strMes);
+      mesLiquidacion = Mes.valueOf(Mes.class, strMes.toUpperCase());
     } catch (Exception e) {
       throw new FechaException("El mes '" + strMes + "' no es un valor válido.");
     }
@@ -277,7 +278,7 @@ public class Nomina {
     boolean retorno = false;
 
     for (int i = 0; i < festivos.size() && !retorno; i++) {
-      if(pDate.compareTo(pDate) == 0)
+      if(festivos.get(i).compareTo(pDate) == 0)
         retorno = true;
     }
 
@@ -330,9 +331,9 @@ public class Nomina {
 
     //Calcula dias laborados en el mes
     if(pFechaIngreso.before(mesLiquidacion.getInicioMes()))
-      diasLaboradosSemestre = mesLiquidacion.getDiasLaborablesMes();
+      diasLaboradosMes = mesLiquidacion.getDiasLaborablesMes();
     else
-      diasLaboradosSemestre = diasLabIntl(pFechaIngreso, mesLiquidacion.getFinalMes());
+      diasLaboradosMes = diasLabIntl(pFechaIngreso, mesLiquidacion.getFinalMes());
   }
 
   /**
