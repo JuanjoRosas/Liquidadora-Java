@@ -126,29 +126,6 @@ public class Empresa {
   }
 
   /**
-   * Busca empleado con mayor fecha ingreso
-   * @return Empleado con mayor fecha ingreso null si esta vacia la lista.
-   */
-  public Empleado buscarEmpleadoMaxFecha() {
-    Empleado retorno = null;
-    Date maxima = null;
-    Empleado actual = null;
-    Date maxiActual = null;
-    for (int i = 0; i < empleados.size(); i++) {
-      actual = empleados.get(i);
-      maxiActual = actual.getFechaIngreso();
-      if(maxima == null){
-        retorno = actual;
-        maxima = maxiActual;
-      }else if(maxiActual.after(maxima)){
-        retorno = actual;
-        maxima = maxiActual;
-      }
-    }
-    return retorno;
-  }
-
-  /**
    * Realiza el calculo de la nómina para el empleado informe segun los atributos estipulados de nómina.
    * @throws FechaException Si aún no se ha escogido fecha de liquidación o si la fecha de ingreso del empleado es posterior al mes de liquidación.
    * @throws Exception Si no se ha inicializado el empleado informe.
